@@ -189,7 +189,7 @@ function embedRegistro(nombrePersonaje, discordTag) {
         `› 🏅 Rango:        Grade 4`,
         `› 🎲 Rerolls:      6`,
         `› 💴 Dinero:       500`,
-        `› ⚔️ Stats:        0 / 0 / 0 / 0`,
+        `› ⚔️ Stats:        0 / 0 / 0 / 600`,
         `› 🌀 Raza:         Sin asignar`,
         `› 🔮 Técnica:      Sin asignar`,
         "",
