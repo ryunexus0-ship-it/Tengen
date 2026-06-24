@@ -32,6 +32,8 @@ const COMANDOS = [
       { nombre: "ajustar-rango",  args: "usuario:<@> rango:<rango>",         desc: "Cambia el rango de un usuario." },
       { nombre: "dar-dinero",     args: "usuario:<@> cantidad:<n>",           desc: "Da o quita monedas." },
       { nombre: "dar-pm",         args: "usuario:<@> cantidad:<n>",           desc: "Da o quita Puntos Malditos." },
+      { nombre: "crear-item",     args: "nombre:<n> tienda:<t> precio:<p> tipo:<t>", desc: "Crea un ítem en la tienda." },
+      { nombre: "limpiar-db",     args: "tabla:<tabla>",                      desc: "Limpia una tabla de la base de datos." },
       { nombre: "setup-roles",    args: "",                                   desc: "Crea todos los roles del servidor." },
     ],
   },
