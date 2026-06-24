@@ -1,15 +1,14 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { query } = require("../../database/db");
 const { embedExito, embedError, COLORS } = require("../../utils/embeds");
 const { esStaff } = require("../../utils/roleManager");
-const { EmbedBuilder } = require("discord.js");
 
 const OPCIONES_LIMPIEZA = {
-  usuarios:       { label: "Usuarios",       desc: "Borra todos los personajes registrados." },
-  tecnicas:       { label: "Técnicas",       desc: "Borra todas las técnicas (y sus referencias)." },
-  items:          { label: "Ítems",          desc: "Borra todos los ítems de tienda e inventarios." },
-  transacciones:  { label: "Transacciones",  desc: "Borra el historial de transacciones." },
-  todo:           { label: "TODO",           desc: "Limpia absolutamente toda la base de datos." },
+  usuarios:      { label: "Usuarios",      desc: "Borra todos los personajes registrados." },
+  tecnicas:      { label: "Técnicas",      desc: "Borra todas las técnicas (y sus referencias en usuarios)." },
+  items:         { label: "Ítems",         desc: "Borra todos los ítems de tienda e inventarios." },
+  transacciones: { label: "Transacciones", desc: "Borra el historial de transacciones." },
+  todo:          { label: "TODO",          desc: "Limpia absolutamente toda la base de datos." },
 };
 
 module.exports = {
@@ -28,6 +27,12 @@ module.exports = {
           { name: "Transacciones", value: "transacciones" },
           { name: "⚠️ TODO",       value: "todo"          }
         )
+    )
+    .addStringOption((opt) =>
+      opt
+        .setName("confirmar")
+        .setDescription('Escribe "CONFIRMAR" para ejecutar la limpieza (irreversible)')
+        .setRequired(true)
     ),
 
   async execute(interaction) {
@@ -38,56 +43,29 @@ module.exports = {
       });
     }
 
-    const tabla  = interaction.options.getString("tabla");
-    const opcion = OPCIONES_LIMPIEZA[tabla];
+    const tabla      = interaction.options.getString("tabla");
+    const confirmar  = interaction.options.getString("confirmar").trim();
+    const opcion     = OPCIONES_LIMPIEZA[tabla];
 
-    // ── Pedir confirmación con botones ──────────────────────────────────────
-    const embedConfirm = new EmbedBuilder()
-      .setColor(COLORS.advertencia)
-      .setTitle("⚠️ Confirmación requerida")
-      .setDescription(
-        [
-          `Estás a punto de limpiar: **${opcion.label}**`,
-          `› ${opcion.desc}`,
-          "",
-          "**Esta acción es irreversible.**",
-          "¿Confirmas?",
-        ].join("\n")
-      )
-      .setFooter({ text: "Tengen · Esta acción no se puede deshacer" })
-      .setTimestamp();
+    // ── Verificar confirmación ──────────────────────────────────────────────
+    if (confirmar !== "CONFIRMAR") {
+      const embed = new EmbedBuilder()
+        .setColor(COLORS.advertencia)
+        .setTitle("⚠️ Acción cancelada")
+        .setDescription(
+          [
+            `Para limpiar **${opcion.label}** debes escribir exactamente \`CONFIRMAR\`.`,
+            "",
+            `› Tabla:   **${opcion.label}**`,
+            `› Efecto:  ${opcion.desc}`,
+            "",
+            "Esta acción **no se puede deshacer**.",
+          ].join("\n")
+        )
+        .setFooter({ text: "Tengen" })
+        .setTimestamp();
 
-    const fila = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("limpiar_confirmar")
-        .setLabel("Confirmar")
-        .setStyle(ButtonStyle.Danger),
-      new ButtonBuilder()
-        .setCustomId("limpiar_cancelar")
-        .setLabel("Cancelar")
-        .setStyle(ButtonStyle.Secondary)
-    );
-
-    await interaction.reply({ embeds: [embedConfirm], components: [fila], ephemeral: true });
-
-    // ── Esperar respuesta (30s) ─────────────────────────────────────────────
-    const filter = (i) => i.user.id === interaction.user.id;
-    let btnInteraction;
-
-    try {
-      btnInteraction = await interaction.channel.awaitMessageComponent({ filter, time: 30_000 });
-    } catch {
-      return interaction.editReply({
-        embeds: [embedError("Tiempo agotado. La operación fue cancelada.")],
-        components: [],
-      });
-    }
-
-    if (btnInteraction.customId === "limpiar_cancelar") {
-      return btnInteraction.update({
-        embeds: [embedError("Operación cancelada.")],
-        components: [],
-      });
+      return interaction.reply({ embeds: [embed], ephemeral: true });
     }
 
     // ── Ejecutar limpieza ───────────────────────────────────────────────────
@@ -99,27 +77,31 @@ module.exports = {
       } else if (tabla === "items") {
         await query("TRUNCATE TABLE inventario, items RESTART IDENTITY CASCADE");
       } else if (tabla === "tecnicas") {
-        // Desvincula técnicas de usuarios antes de borrar
         await query("UPDATE usuarios SET tecnica_id = NULL");
         await query("TRUNCATE TABLE tecnicas RESTART IDENTITY CASCADE");
       } else if (tabla === "transacciones") {
         await query("TRUNCATE TABLE transacciones RESTART IDENTITY CASCADE");
       }
 
-      await btnInteraction.update({
+      await interaction.reply({
         embeds: [
           embedExito(
             "Base de datos limpiada",
-            `› Tabla(s) **${opcion.label}** limpiada(s) correctamente.\n› Ejecutado por: ${interaction.user.tag}`
+            [
+              `› Tabla(s): **${opcion.label}**`,
+              `› ${opcion.desc}`,
+              `› Ejecutado por: ${interaction.user.tag}`,
+            ].join("\n")
           ),
         ],
-        components: [],
+        ephemeral: true,
       });
+
     } catch (err) {
       console.error("[limpiar-db]", err);
-      await btnInteraction.update({
-        embeds: [embedError(`Error al limpiar: ${err.message}`)],
-        components: [],
+      await interaction.reply({
+        embeds: [embedError(`Error al limpiar la tabla: \`${err.message}\``)],
+        ephemeral: true,
       });
     }
   },

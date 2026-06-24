@@ -118,33 +118,40 @@ function embedExito(titulo, mensaje) {
 }
 
 /**
- * Embed de tienda — formato lista.
- * @param {Array}  items        - Array de objetos item
- * @param {number} pagina       - Página actual (0-indexed)
- * @param {number} totalPaginas
+ * Embed de tienda — formato lista completa sin paginación.
+ * @param {Array}  items   - Todos los ítems disponibles
+ * @param {number} saldo   - Saldo actual del usuario
  * @param {'dinero'|'pm'} moneda
  */
-function embedTienda(items, pagina, totalPaginas, moneda) {
-  const esPM   = moneda === "pm";
+function embedTienda(items, saldo, moneda) {
+  const esPM    = moneda === "pm";
   const simbolo = esPM ? "PM" : "monedas";
   const titulo  = esPM ? "🏪 Tienda de Puntos Malditos" : "🏪 Tienda General";
+  const icono   = esPM ? "🔮" : "💴";
 
-  const lineas = items.flatMap((item, i) => {
+  const lineas = [
+    `${icono} **Tu saldo: ${saldo} ${simbolo}**`,
+    `*Compra con* \`/comprar item:<nombre>\``,
+    "",
+    "─────────────────────────",
+    "",
+  ];
+
+  items.forEach((item, i) => {
     const precio = esPM ? item.precio_pm : item.precio_dinero;
-    return [
-      `**${i + 1 + pagina * 5}. ${item.nombre}**`,
+    lineas.push(
+      `**${i + 1}. ${item.nombre}**`,
       `› ${item.descripcion ?? "Sin descripción"}`,
-      `› 💰 Precio: \`${precio} ${simbolo}\``,
-      `› 🏷️ Tipo: ${item.tipo}`,
-      "",
-    ];
+      `› 💰 \`${precio} ${simbolo}\`  🏷️ ${item.tipo}`,
+      ""
+    );
   });
 
   return new EmbedBuilder()
     .setColor(COLORS.principal)
     .setTitle(titulo)
-    .setDescription(lineas.join("\n") || "_No hay ítems disponibles._")
-    .setFooter({ text: `Tengen · Página ${pagina + 1} de ${totalPaginas}` })
+    .setDescription(lineas.join("\n").trim())
+    .setFooter({ text: `Tengen · ${items.length} ítem(s) disponible(s)` })
     .setTimestamp();
 }
 

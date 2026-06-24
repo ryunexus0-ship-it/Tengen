@@ -13,16 +13,17 @@ const COMANDOS = [
   {
     categoria: "🎰 Spins",
     items: [
-      { nombre: "spin-raza",    args: "",  desc: "Obtén o rerollea tu raza." },
-      { nombre: "spin-tecnica", args: "",  desc: "Obtén o rerollea tu técnica maldita." },
+      { nombre: "spin-raza",    args: "[reroll:True]",  desc: "Obtén tu raza. Añade reroll:True para gastar 1 RR y volver a tirar." },
+      { nombre: "spin-tecnica", args: "[reroll:True]",  desc: "Obtén tu técnica. Añade reroll:True para gastar 1 RR." },
     ],
   },
   {
     categoria: "🏪 Tiendas",
     items: [
-      { nombre: "tienda",    args: "", desc: "Tienda general (usa monedas)." },
-      { nombre: "tienda-pm", args: "", desc: "Tienda de Puntos Malditos." },
-      { nombre: "inventario", args: "", desc: "Muestra tu inventario." },
+      { nombre: "tienda",     args: "",               desc: "Muestra la tienda general (monedas)." },
+      { nombre: "tienda-pm",  args: "",               desc: "Muestra la tienda de Puntos Malditos." },
+      { nombre: "comprar",    args: "item:<nombre>",  desc: "Compra un ítem de cualquier tienda." },
+      { nombre: "inventario", args: "",               desc: "Muestra tu inventario." },
     ],
   },
   {
@@ -33,7 +34,7 @@ const COMANDOS = [
       { nombre: "dar-dinero",     args: "usuario:<@> cantidad:<n>",           desc: "Da o quita monedas." },
       { nombre: "dar-pm",         args: "usuario:<@> cantidad:<n>",           desc: "Da o quita Puntos Malditos." },
       { nombre: "crear-item",     args: "nombre:<n> tienda:<t> precio:<p> tipo:<t>", desc: "Crea un ítem en la tienda." },
-      { nombre: "limpiar-db",     args: "tabla:<tabla>",                      desc: "Limpia una tabla de la base de datos." },
+      { nombre: "limpiar-db",     args: "tabla:<tabla> confirmar:CONFIRMAR",  desc: "Limpia una tabla de la base de datos." },
       { nombre: "setup-roles",    args: "",                                   desc: "Crea todos los roles del servidor." },
     ],
   },
