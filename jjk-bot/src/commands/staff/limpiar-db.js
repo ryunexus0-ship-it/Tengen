@@ -44,8 +44,18 @@ module.exports = {
     }
 
     const tabla      = interaction.options.getString("tabla");
-    const confirmar  = interaction.options.getString("confirmar").trim();
+    const confirmar  = interaction.options.getString("confirmar")?.trim() ?? "";
     const opcion     = OPCIONES_LIMPIEZA[tabla];
+
+    // ── Tabla inválida (puede pasar por prefijo) ────────────────────────────
+    if (!opcion) {
+      return interaction.reply({
+        embeds: [embedError(
+          "Tabla no válida. Opciones: `usuarios`, `tecnicas`, `items`, `transacciones`, `todo`."
+        )],
+        ephemeral: true,
+      });
+    }
 
     // ── Verificar confirmación ──────────────────────────────────────────────
     if (confirmar !== "CONFIRMAR") {

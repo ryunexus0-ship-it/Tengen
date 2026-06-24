@@ -1,125 +1,131 @@
 module.exports = [
   // ─── COMUNES ───────────────────────────────────────────────────────────────
   {
-    nombre: "Divergent Fist",
+    nombre: "Manipulación de Marionetas",
     rareza: "Comun",
     descripcion:
-      "Técnica básica que acumula energía maldita en el puño y la libera en el momento del impacto. Provoca daño adicional por el retraso en la propagación de la energía.",
+      "Permite al usuario controlar marionetas o muñecos mediante hilos de energía maldita. Las marionetas actúan como extensiones del cuerpo del invocador.",
   },
   {
-    nombre: "Cursed Energy Reinforcement",
+    nombre: "Técnica de las Proporciones",
     rareza: "Comun",
     descripcion:
-      "Refuerzo básico del cuerpo con energía maldita. Aumenta la fuerza, velocidad y resistencia física del usuario al recubrir su cuerpo con energía maldita.",
+      "Divide cualquier objetivo en una proporción de 3:7 y destruye el punto de división con energía maldita concentrada. Técnica heredada eficiente y directa.",
   },
   {
-    nombre: "Cursed Tool Binding",
+    nombre: "Manipulación de Herramientas Malditas",
     rareza: "Comun",
     descripcion:
-      "Permite al usuario infundir energía maldita en herramientas u objetos para potenciar sus golpes o crear barreras básicas de contención.",
-  },
-  {
-    nombre: "Basic Cursed Barrier",
-    rareza: "Comun",
-    descripcion:
-      "Crea una barrera simple de energía maldita para deflectar ataques menores. Requiere concentración constante para mantenerse activa.",
+      "Otorga dominio avanzado sobre herramientas malditas, permitiendo canalizar energía con alta precisión y potenciar los ataques físicos con objetos imbuidos.",
   },
 
   // ─── RARAS ─────────────────────────────────────────────────────────────────
   {
-    nombre: "Black Flash",
+    nombre: "Manipulación de Sangre",
     rareza: "Rara",
     descripcion:
-      "Técnica avanzada que comprime energía maldita en el instante del golpe físico. Produce un destello negro y potencia el impacto 2.5 veces. Requiere sincronización perfecta.",
+      "Permite manipular la sangre propia o ajena como proyectil o herramienta de combate. Puede solidificarla, lanzarla a alta velocidad o usarla para rastrear objetivos.",
   },
   {
-    nombre: "Cursed Tool Mastery",
+    nombre: "Discurso Maldito",
     rareza: "Rara",
     descripcion:
-      "Dominio avanzado sobre herramientas malditas. Permite al usuario manipular herramientas malditas con gran precisión y canalizar su energía de formas complejas.",
+      "Las palabras del usuario adquieren poder maldito. Las órdenes emitidas con esta técnica pueden obligar a los objetivos a cumplirlas, con efectos que escalan según la intensidad.",
   },
   {
-    nombre: "Falling Blossom Emotion",
+    nombre: "Boogie Woogie",
     rareza: "Rara",
     descripcion:
-      "Técnica defensiva que activa automáticamente la energía maldita del usuario ante cualquier ataque entrante, neutralizando parte del daño de forma instintiva.",
+      "Con un aplauso, intercambia la posición de dos entidades que contengan energía maldita. Genera confusión extrema en combate y permite reposicionamientos instantáneos.",
   },
   {
-    nombre: "Simple Domain",
+    nombre: "Técnica de las Marionetas Autónomas",
     rareza: "Rara",
     descripcion:
-      "Versión simplificada de un Dominio de Expansión. Crea una pequeña área de influencia que neutraliza automáticamente los ataques garantizados de otros dominios.",
+      "Versión avanzada de manipulación de marionetas. Las marionetas creadas actúan de forma autónoma sin necesitar control activo, liberando al usuario para otras acciones.",
   },
 
   // ─── ÉPICAS ────────────────────────────────────────────────────────────────
   {
-    nombre: "Ratio Technique",
+    nombre: "Manipulación de Espíritus Malditos",
     rareza: "Epica",
     descripcion:
-      "Técnica heredada del Clan Nanami. Divide el objetivo en una proporción 3:7 y destruye el punto de división. Puede convertirse en Crimson Binding para restringir objetivos.",
+      "Permite absorber y controlar maldiciones derrotadas. Las maldiciones absorbidas pueden ser invocadas como armas o herramientas. El arsenal crece con cada victoria.",
   },
   {
-    nombre: "Flame Arrow",
+    nombre: "Diez Sombras",
     rareza: "Epica",
     descripcion:
-      "Transforma la energía maldita en proyectiles de llamas de alta temperatura. Los impactos directos provocan explosiones de energía que se expanden en área.",
+      "Usa sombras como medio para invocar hasta diez shikigami divinos. Cada shikigami debe ser domado en combate antes de poder ser utilizado. Varios pueden fusionarse.",
   },
   {
-    nombre: "Puppet Manipulation",
+    nombre: "Manipulación del Cielo",
     rareza: "Epica",
     descripcion:
-      "Técnica maldita heredada que permite al usuario controlar marionetas mediante hilos de energía maldita. Los títeres funcionan como extensiones del propio cuerpo.",
+      "Otorga control sobre el espacio aéreo y la atmósfera circundante. Puede generar corrientes de presión, desviar ataques entrantes y manipular el entorno en combate.",
   },
   {
-    nombre: "Boogie Woogie",
+    nombre: "Técnica de Proyección",
     rareza: "Epica",
     descripcion:
-      "Permite intercambiar la posición de dos objetos o personas que contengan energía maldita mediante un aplauso. Genera confusión extrema en combate.",
+      "Divide el tiempo en fotogramas de 1/24 de segundo. El usuario puede trazar rutas de movimiento y ejecutarlas con precisión absoluta. Quienes no sigan el ritmo quedan paralizados.",
   },
 
   // ─── LEGENDARIAS ───────────────────────────────────────────────────────────
   {
-    nombre: "Infinity (Limitless)",
+    nombre: "Construcción",
     rareza: "Legendaria",
     descripcion:
-      "Técnica heredada del Clan Gojo. Manipula el espacio a escala atómica usando conceptos del infinito matemático. En su forma base crea una barrera infinita que detiene todo lo que se acerque.",
+      "Permite materializar objetos o estructuras a partir de energía maldita con alta precisión. Los objetos creados son físicamente reales y pueden usarse en combate o defensa.",
   },
   {
-    nombre: "Ten Shadows Technique",
+    nombre: "Copia",
     rareza: "Legendaria",
     descripcion:
-      "Técnica heredada del Clan Zenin. Invoca hasta diez shikigami divinos usando sombras como medio. Cada shikigami debe ser domado mediante combate y puede fusionarse con el usuario.",
+      "Con contacto visual, el usuario puede replicar las técnicas malditas de otros. Las técnicas copiadas funcionan a un porcentaje de su potencia original según el dominio del usuario.",
   },
   {
-    nombre: "Projection Sorcery",
+    nombre: "Star Rage",
     rareza: "Legendaria",
     descripcion:
-      "Divide el tiempo en fotogramas de 1/24 de segundo y permite al usuario mover su cuerpo de acuerdo a rutas predefinidas. Quien no pueda seguir el ritmo queda paralizado.",
+      "Concentra energía maldita en forma de radiación explosiva de gran alcance. A mayor carga previa, mayor radio de destrucción. Uno de los ataques de área más devastadores conocidos.",
   },
   {
-    nombre: "Hairpin",
+    nombre: "Comediante",
     rareza: "Legendaria",
     descripcion:
-      "Técnica de la familia Ieri. Convierte la energía maldita acumulada en una explosión de radiación instantánea de alcance masivo. Requiere carga previa para máxima potencia.",
+      "Técnica que convierte el dolor y la tragedia en energía maldita potenciada. Cuanto mayor es el sufrimiento del usuario, más poderosos se vuelven sus ataques.",
+  },
+  {
+    nombre: "Transfiguración Ociosa",
+    rareza: "Legendaria",
+    descripcion:
+      "Transforma la energía maldita en masa y la inyecta en objetivos, deformando sus cuerpos desde adentro. Puede crear ejércitos de transfigurados o deformar el terreno.",
   },
 
   // ─── MÍTICAS ───────────────────────────────────────────────────────────────
   {
-    nombre: "Six Eyes + Limitless",
+    nombre: "Ilimitado",
     rareza: "Mitica",
     descripcion:
-      "La combinación suprema del Clan Gojo. Los Six Eyes permiten ver la energía maldita con una resolución infinita, usar Limitless con un gasto mínimo y calcular la técnica perfecta en cada situación. Solo aparece una vez por generación.",
+      "Técnica suprema del Clan Gojo. Manipula el espacio a escala atómica usando el concepto matemático del infinito. En su forma pasiva detiene todo lo que se aproxime. Su dominio es absoluto.",
   },
   {
-    nombre: "Shrine (Mahoraga)",
+    nombre: "Manipulación de la Gravedad",
     rareza: "Mitica",
     descripcion:
-      "El shikigami más poderoso de la Técnica de las Diez Sombras. Mahoraga posee la capacidad de adaptarse a cualquier técnica o ataque que enfrente. Ningún invocador ha logrado domarlo en la historia.",
+      "Control total sobre la fuerza gravitacional. El usuario puede invertir, amplificar o anular la gravedad en un área. Capaz de aplastar objetivos o lanzarlos con fuerza catastrófica.",
   },
   {
-    nombre: "Cursed Spirit Manipulation",
+    nombre: "Santuario",
     rareza: "Mitica",
     descripcion:
-      "Técnica heredada del Clan Geto. Permite absorber y manipular maldiciones derrotadas. Cuanto más poderosa sea la maldición absorbida, mayor su utilidad. El arsenal puede escalar indefinidamente.",
+      "Técnica de Ryomen Sukuna. Define un radio de destrucción absoluta en el que todo dentro del alcance es cortado sin excepción. Su dominio no tiene defensa conocida.",
+  },
+  {
+    nombre: "Adaptación de Mahoraga",
+    rareza: "Mitica",
+    descripcion:
+      "El shikigami más poderoso de las Diez Sombras. Mahoraga posee la capacidad de adaptarse a cualquier técnica o ataque que enfrente tras cada ciclo. Nunca ha sido domado por ningún invocador.",
   },
 ];
