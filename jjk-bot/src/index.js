@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js");
+const { Client, Collection, GatewayIntentBits, Partials, REST, Routes } = require("discord.js");
 const fs   = require("fs");
 const path = require("path");
 const { initDb } = require("./database/db");
@@ -20,13 +20,13 @@ const client = new Client({
 });
 
 client.PREFIX = PREFIX;
-
 client.commands = new Collection();
 
 // ─── Cargar comandos de forma dinámica ──────────────────────────────────────
 const commandsPath = path.join(__dirname, "commands");
-const carpetas = fs.readdirSync(commandsPath);
+const slashData    = [];   // para el deploy automático
 
+const carpetas = fs.readdirSync(commandsPath);
 for (const carpeta of carpetas) {
   const carpetaPath = path.join(commandsPath, carpeta);
   if (!fs.statSync(carpetaPath).isDirectory()) continue;
@@ -38,6 +38,7 @@ for (const carpeta of carpetas) {
 
     if ("data" in command && "execute" in command) {
       client.commands.set(command.data.name, command);
+      slashData.push(command.data.toJSON());
       console.log(`[Commands] Cargado: /${command.data.name}`);
     } else {
       console.warn(`[Commands] Falta data/execute en: ${filePath}`);
@@ -61,11 +62,28 @@ for (const archivo of eventFiles) {
   console.log(`[Events] Registrado: ${event.name}`);
 }
 
-// ─── Inicializar DB y conectar ───────────────────────────────────────────────
+// ─── Deploy automático de slash commands ────────────────────────────────────
+async function deployCommands() {
+  const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
+  try {
+    console.log(`[Deploy] Registrando ${slashData.length} slash commands...`);
+    await rest.put(
+      Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+      { body: slashData }
+    );
+    console.log(`[Deploy] ✅ ${slashData.length} comandos registrados.`);
+  } catch (err) {
+    // No matar el proceso si falla el deploy — el bot puede seguir funcionando
+    console.error("[Deploy] ⚠️ Error al registrar comandos:", err.message);
+  }
+}
+
+// ─── Inicializar DB, deploy y conectar ──────────────────────────────────────
 (async () => {
   try {
     await initDb();
     console.log("[DB] Base de datos inicializada.");
+    await deployCommands();
     await client.login(process.env.DISCORD_TOKEN);
   } catch (err) {
     console.error("[FATAL] No se pudo iniciar el bot:", err);
