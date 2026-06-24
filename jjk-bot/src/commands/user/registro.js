@@ -27,17 +27,17 @@ module.exports = {
 
     if (rows.length > 0) {
       return interaction.reply({
-        embeds: [embedError("Ya tienes un personaje registrado. Usa `/perfil` para verlo.")],
+        embeds: [embedError("Ya tienes un personaje registrado. Usa `/perfil` o `+perfil` para verlo.")],
         ephemeral: true,
       });
     }
 
-    // Crear usuario con stats base
+    // Crear usuario — raza/técnica NULL, stats en 0, 6 rerolls
     await query(
       `INSERT INTO usuarios
-        (discord_id, nombre_personaje, rango, nivel, xp, dinero, pm, skill_points,
-         rerolls, fuerza, velocidad, resistencia, energia_maldita)
-       VALUES ($1, $2, 'Grade 4', 1, 0, 500, 0, 0, 6, 10, 10, 10, 600)`,
+        (discord_id, nombre_personaje, raza, tecnica_id, rango, nivel, xp, dinero, pm,
+         skill_points, rerolls, fuerza, velocidad, resistencia, energia_maldita)
+       VALUES ($1, $2, NULL, NULL, 'Grade 4', 1, 0, 500, 0, 0, 6, 0, 0, 0, 0)`,
       [discordId, nombrePersonaje]
     );
 

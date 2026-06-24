@@ -27,7 +27,7 @@ module.exports = {
     }
 
     client.user.setPresence({
-      activities: [{ name: "JJK Rol | /registro", type: 0 }],
+      activities: [{ name: "JJK Rol | /registro  +registro", type: 0 }],
       status: "online",
     });
   },

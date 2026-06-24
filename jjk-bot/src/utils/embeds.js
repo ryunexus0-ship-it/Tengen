@@ -28,89 +28,68 @@ const RAZA_EMOJI = {
   Hibrido:   "⚡",
 };
 
+const FOOTER = { text: "Tengen" };
+
 /**
- * Embed de perfil completo de un usuario.
+ * Embed de perfil completo de un usuario — formato lista.
  */
 function embedPerfil(usuario, tecnica, memberTag, avatarUrl) {
-  const rarezaColor = tecnica ? COLORS[tecnica.rareza] ?? COLORS.principal : COLORS.principal;
+  const rarezaColor = tecnica ? (COLORS[tecnica.rareza] ?? COLORS.principal) : COLORS.principal;
 
-  const embed = new EmbedBuilder()
+  const razaLine    = usuario.raza    ? `${RAZA_EMOJI[usuario.raza] ?? "❓"} ${usuario.raza}`   : "❓ Sin asignar";
+  const tecnicaLine = tecnica         ? `${RAREZA_EMOJI[tecnica.rareza]} ${tecnica.nombre} *(${tecnica.rareza})*` : "❓ Sin asignar";
+
+  return new EmbedBuilder()
     .setColor(rarezaColor)
-    .setTitle(`📋 Ficha de ${usuario.nombre_personaje}`)
+    .setTitle(`📋 ${usuario.nombre_personaje}`)
     .setThumbnail(avatarUrl ?? null)
-    .addFields(
-      {
-        name: "👤 Jugador",
-        value: memberTag,
-        inline: true,
-      },
-      {
-        name: `${RAZA_EMOJI[usuario.raza] ?? "❓"} Raza`,
-        value: usuario.raza ?? "_Sin definir_",
-        inline: true,
-      },
-      {
-        name: "🏅 Rango",
-        value: usuario.rango,
-        inline: true,
-      },
-      {
-        name: `${tecnica ? RAREZA_EMOJI[tecnica.rareza] : "❓"} Técnica Maldita`,
-        value: tecnica
-          ? `**${tecnica.nombre}**\n*${tecnica.rareza}*\n${tecnica.descripcion}`
-          : "_Sin técnica asignada_",
-        inline: false,
-      },
-      {
-        name: "📊 Stats",
-        value: [
-          `⚔️ Fuerza:          **${usuario.fuerza}**`,
-          `💨 Velocidad:       **${usuario.velocidad}**`,
-          `🛡️ Resistencia:     **${usuario.resistencia}**`,
-          `🌀 Energía Maldita: **${usuario.energia_maldita}**`,
-        ].join("\n"),
-        inline: true,
-      },
-      {
-        name: "💰 Recursos",
-        value: [
-          `💴 Dinero:       **${usuario.dinero}**`,
-          `🔮 PM:           **${usuario.pm}**`,
-          `🎯 Skill Points: **${usuario.skill_points}**`,
-          `🎲 Rerolls:      **${usuario.rerolls}**`,
-        ].join("\n"),
-        inline: true,
-      },
-      {
-        name: "📈 Progresión",
-        value: [
-          `⭐ Nivel: **${usuario.nivel}**`,
-          `✨ XP:    **${usuario.xp}**`,
-        ].join("\n"),
-        inline: true,
-      }
+    .setDescription(
+      [
+        `👤 **Jugador:** ${memberTag}`,
+        `${razaLine.startsWith("❓") ? "❓" : RAZA_EMOJI[usuario.raza]} **Raza:** ${usuario.raza ?? "Sin asignar"}`,
+        `🏅 **Rango:** ${usuario.rango}`,
+        `⭐ **Nivel:** ${usuario.nivel}  ✨ **XP:** ${usuario.xp}`,
+        "",
+        "**⚔️ Stats**",
+        `› Fuerza:          \`${usuario.fuerza}\``,
+        `› Velocidad:       \`${usuario.velocidad}\``,
+        `› Resistencia:     \`${usuario.resistencia}\``,
+        `› Energía Maldita: \`${usuario.energia_maldita}\``,
+        "",
+        "**💰 Recursos**",
+        `› Dinero:       \`${usuario.dinero}\``,
+        `› PM:           \`${usuario.pm}\``,
+        `› Skill Points: \`${usuario.skill_points}\``,
+        `› Rerolls:      \`${usuario.rerolls}\``,
+        "",
+        "**🌀 Técnica Maldita**",
+        `› ${tecnicaLine}`,
+        tecnica ? `› ${tecnica.descripcion}` : "",
+      ].filter((l) => l !== undefined).join("\n")
     )
-    .setFooter({ text: "JJK Rol Bot" })
+    .setFooter(FOOTER)
     .setTimestamp();
-
-  return embed;
 }
 
 /**
- * Embed de resultado de spin.
+ * Embed de resultado de spin — formato lista.
  */
 function embedSpin(tipo, resultado, rareza, descripcion, esReroll) {
-  const color = rareza ? COLORS[rareza] ?? COLORS.principal : COLORS.principal;
-  const emoji = rareza ? RAREZA_EMOJI[rareza] ?? "🎲" : "🎲";
+  const color = rareza ? (COLORS[rareza] ?? COLORS.principal) : COLORS.principal;
+  const emoji = rareza ? (RAREZA_EMOJI[rareza] ?? "🎲") : "🎲";
   const tipoLabel = tipo === "raza" ? "Raza" : "Técnica Maldita";
+
+  const lineas = [
+    `${emoji} **Resultado:** ${resultado}`,
+    rareza ? `📊 **Rareza:** ${rareza}` : null,
+    descripcion ? `📖 ${descripcion}` : null,
+  ].filter(Boolean);
 
   return new EmbedBuilder()
     .setColor(color)
     .setTitle(`${esReroll ? "🔄 Re-Spin" : "🎰 Spin"} de ${tipoLabel}`)
-    .setDescription(
-      `${emoji} **${resultado}**${rareza ? `\n*Rareza: ${rareza}*` : ""}\n\n${descripcion ?? ""}`
-    )
-    .setFooter({ text: esReroll ? "Gastaste 1 Reroll" : "Spin inicial usado" })
+    .setDescription(lineas.join("\n"))
+    .setFooter({ text: esReroll ? "Tengen · Gastaste 1 Reroll" : "Tengen · Spin inicial usado" })
     .setTimestamp();
 }
 
@@ -122,6 +101,7 @@ function embedError(mensaje) {
     .setColor(COLORS.error)
     .setTitle("❌ Error")
     .setDescription(mensaje)
+    .setFooter(FOOTER)
     .setTimestamp();
 }
 
@@ -133,82 +113,91 @@ function embedExito(titulo, mensaje) {
     .setColor(COLORS.exito)
     .setTitle(`✅ ${titulo}`)
     .setDescription(mensaje)
+    .setFooter(FOOTER)
     .setTimestamp();
 }
 
 /**
- * Embed de tienda con paginación.
- * @param {Array}  items       - Array de objetos item
- * @param {number} pagina      - Página actual (0-indexed)
+ * Embed de tienda — formato lista.
+ * @param {Array}  items        - Array de objetos item
+ * @param {number} pagina       - Página actual (0-indexed)
  * @param {number} totalPaginas
- * @param {'dinero'|'pm'}  moneda
+ * @param {'dinero'|'pm'} moneda
  */
 function embedTienda(items, pagina, totalPaginas, moneda) {
-  const esPM = moneda === "pm";
-  const simbolo = esPM ? "🔮 PM" : "💴 Monedas";
-  const titulo = esPM ? "🏪 Tienda de Puntos Malditos" : "🏪 Tienda General";
+  const esPM   = moneda === "pm";
+  const simbolo = esPM ? "PM" : "monedas";
+  const titulo  = esPM ? "🏪 Tienda de Puntos Malditos" : "🏪 Tienda General";
 
-  const camposItems = items.map((item) => {
+  const lineas = items.flatMap((item, i) => {
     const precio = esPM ? item.precio_pm : item.precio_dinero;
-    return {
-      name: `${item.nombre}`,
-      value: `${item.descripcion ?? "_Sin descripción_"}\n💰 Precio: **${precio} ${simbolo}**\n🏷️ Tipo: ${item.tipo}`,
-      inline: false,
-    };
+    return [
+      `**${i + 1 + pagina * 5}. ${item.nombre}**`,
+      `› ${item.descripcion ?? "Sin descripción"}`,
+      `› 💰 Precio: \`${precio} ${simbolo}\``,
+      `› 🏷️ Tipo: ${item.tipo}`,
+      "",
+    ];
   });
 
   return new EmbedBuilder()
     .setColor(COLORS.principal)
     .setTitle(titulo)
-    .addFields(camposItems)
-    .setFooter({ text: `Página ${pagina + 1} de ${totalPaginas} | JJK Rol Bot` })
+    .setDescription(lineas.join("\n") || "_No hay ítems disponibles._")
+    .setFooter({ text: `Tengen · Página ${pagina + 1} de ${totalPaginas}` })
     .setTimestamp();
 }
 
 /**
- * Embed de inventario.
+ * Embed de inventario — formato lista.
  */
 function embedInventario(nombrePersonaje, entradas) {
-  const embed = new EmbedBuilder()
-    .setColor(COLORS.principal)
-    .setTitle(`🎒 Inventario de ${nombrePersonaje}`)
-    .setTimestamp()
-    .setFooter({ text: "JJK Rol Bot" });
+  let descripcion;
 
   if (!entradas || entradas.length === 0) {
-    embed.setDescription("_El inventario está vacío._");
+    descripcion = "_El inventario está vacío._";
   } else {
-    const valor = entradas
-      .map((e) => `• **${e.nombre}** x${e.cantidad}\n  _${e.descripcion ?? "Sin descripción"}_`)
+    descripcion = entradas
+      .map((e, i) => [
+        `**${i + 1}. ${e.nombre}** — x${e.cantidad}`,
+        `› ${e.descripcion ?? "Sin descripción"}`,
+      ].join("\n"))
       .join("\n\n");
-    embed.setDescription(valor);
   }
 
-  return embed;
+  return new EmbedBuilder()
+    .setColor(COLORS.principal)
+    .setTitle(`🎒 Inventario de ${nombrePersonaje}`)
+    .setDescription(descripcion)
+    .setFooter(FOOTER)
+    .setTimestamp();
 }
 
 /**
- * Embed de registro exitoso.
+ * Embed de registro exitoso — formato lista.
  */
-function embedRegistro(nombrePersonaje, discord_tag) {
+function embedRegistro(nombrePersonaje, discordTag) {
   return new EmbedBuilder()
     .setColor(COLORS.exito)
     .setTitle("📝 ¡Registro Completado!")
     .setDescription(
-      `Bienvenido/a al mundo del jujutsu, **${nombrePersonaje}**.\n\n` +
-      `Usa \`/spin-raza\` para descubrir tu raza y \`/spin-tecnica\` para obtener tu técnica maldita.\n` +
-      `Empiezas con **6 Rerolls**, **500 monedas** y los stats base.`
+      [
+        `Bienvenido/a al mundo del jujutsu, **${nombrePersonaje}**.`,
+        "",
+        "**📋 Tu ficha inicial**",
+        `› 👤 Jugador:      ${discordTag}`,
+        `› 🏅 Rango:        Grade 4`,
+        `› 🎲 Rerolls:      6`,
+        `› 💴 Dinero:       500`,
+        `› ⚔️ Stats:        0 / 0 / 0 / 0`,
+        `› 🌀 Raza:         Sin asignar`,
+        `› 🔮 Técnica:      Sin asignar`,
+        "",
+        "Usa `+spin-raza` o `/spin-raza` para obtener tu raza.",
+        "Usa `+spin-tecnica` o `/spin-tecnica` para obtener tu técnica maldita.",
+      ].join("\n")
     )
-    .addFields(
-      { name: "👤 Jugador",    value: discord_tag,   inline: true },
-      { name: "🏅 Rango",      value: "Grade 4",     inline: true },
-      { name: "🎲 Rerolls",    value: "6",           inline: true },
-      { name: "💴 Dinero",     value: "500",         inline: true },
-      { name: "⚔️ Fuerza",     value: "10",          inline: true },
-      { name: "💨 Velocidad",  value: "10",          inline: true },
-      { name: "🛡️ Resistencia","value": "10",        inline: true },
-      { name: "🌀 En. Maldita","value": "600",       inline: true }
-    )
+    .setFooter(FOOTER)
     .setTimestamp();
 }
 
