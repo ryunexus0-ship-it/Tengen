@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
   fuerza           INTEGER      NOT NULL DEFAULT 0,
   velocidad        INTEGER      NOT NULL DEFAULT 0,
   resistencia      INTEGER      NOT NULL DEFAULT 0,
-  energia_maldita  INTEGER      NOT NULL DEFAULT 0,
+  energia_maldita  INTEGER      NOT NULL DEFAULT 600,
   created_at       TIMESTAMP    NOT NULL DEFAULT NOW()
 );
 

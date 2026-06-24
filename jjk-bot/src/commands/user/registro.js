@@ -37,7 +37,7 @@ module.exports = {
       `INSERT INTO usuarios
         (discord_id, nombre_personaje, raza, tecnica_id, rango, nivel, xp, dinero, pm,
          skill_points, rerolls, fuerza, velocidad, resistencia, energia_maldita)
-       VALUES ($1, $2, NULL, NULL, 'Grade 4', 1, 0, 500, 0, 0, 6, 0, 0, 0, 0)`,
+       VALUES ($1, $2, NULL, NULL, 'Grade 4', 1, 0, 500, 0, 0, 6, 0, 0, 0, 600)`,
       [discordId, nombrePersonaje]
     );
 
